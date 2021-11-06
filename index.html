@@ -16,7 +16,7 @@
       ctx.strokeStyle = "blue";
       ctx.lineJoin = "round";
       ctx.lineCap = "round";
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 3;
 
       let drawing = false;
       // let mode = "";
@@ -27,14 +27,13 @@
       let x = null;
       let y = null;
       let rotationOffset = 0;
-      let rotationSpeed = 0.1;
+      let rotationSpeed = 0.08;
       let hue = 0;
       let radius = 10;
       let radiusIncreasing = true;
-      let numLines = 2;
+      let numLines = 3;
 
       function draw(e) {
-        console.log(e);
         if (!drawing) return;
         //switch statement to check all our state?
         // simpleLine();
@@ -42,21 +41,20 @@
         console.log(`hue: ${hue}`);
         console.log(`radius: ${radius}`);
         console.log(`numLines: ${numLines}`);
-        console.log(`radiusIncreasing: ${radiusIncreasing}`);
         ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
         multiLineCircleRotate(5);
 
         [x, y] = [e.offsetX, e.offsetY];
-        hue = (hue + 1) % 360;
-
+        
         if (e.ctrlKey) {
           rotationOffset += rotationSpeed;
         }
         if (e.altKey) {
-          if (radius > 15 || radius < 5) {
-            radiusIncreasing = !radiusIncreasing;
-          }
-          radiusIncreasing ? (radius += 0.5) : (radius -= 0.5);
+          hue = (hue + 1) % 360;
+          // if (radius > 15 || radius < 5) {
+          //   radiusIncreasing = !radiusIncreasing;
+          // }
+          // radiusIncreasing ? (radius += 0.5) : (radius -= 0.5);
         }
 
         
