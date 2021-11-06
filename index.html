@@ -66,8 +66,8 @@
             if (e.ctrlKey) newRotationOffset -= rotationSpeed;
             const currentRadians =
               ((newRotationOffset + 2) * Math.PI * (i + 1)) / numLines;
-            xOffset = radius * Math.cos(currentRadians);
-            yOffset = radius * Math.sin(currentRadians);
+            let xOffset = radius * Math.cos(currentRadians);
+            let yOffset = radius * Math.sin(currentRadians);
             // console.log(`xOffset: ${xOffset} yOffset: ${yOffset}`)
 
             //start line
@@ -95,20 +95,22 @@
       canvas.addEventListener("mousedown", (e) => {
         [oldX, oldY] = [e.offsetX, e.offsetY];
         drawing = true;
+        console.log(oldXOffsets);
       });
       canvas.addEventListener("mouseup", () => {
         [oldX, oldY] = [null, null];
         drawing = false;
-        oldXOffsets.map(o => 0);
-        oldYOffsets.map(o => 0);
+        oldXOffsets = oldXOffsets.map(o => 0);
+        oldYOffsets = oldYOffsets.map(o => 0);
         rotationOffset = 0;
       });
       canvas.addEventListener("mouseout", () => {
         [oldX, oldY] = [null, null];
         drawing = false;
-        oldXOffsets.map(o => 0);
-        oldYOffsets.map(o => 0);
+        oldXOffsets = oldXOffsets.map(o => 0);
+        oldYOffsets = oldYOffsets.map(o => 0);
         rotationOffset = 0;
+
       });
 
       // function multiLine(numLines, gap) {
