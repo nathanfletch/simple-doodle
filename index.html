@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <title>Doodle</title>
+  </head>
+  <body>
+    <canvas id="doodle-canvas"></canvas>
+    <script>
+      const canvas = document.getElementById("doodle-canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      ctx.strokeStyle = "blue";
+      // ctx.lineJoin = 'round';
+      // ctx.lineCap = 'round';
+      ctx.lineWidth = 2;
+
+      let drawing = false;
+      // let mode = ""; 
+        //line: 
+          //width, numlines, 
+        //circle:
+
+
+
+      let x = null;
+      let y = null;
+
+      function draw(e) {
+        if (!drawing) return;
+        //switch statement to check all our state?
+        // simpleLine();
+        multiLine(5);
+        
+        function simpleLine() {
+          ctx.beginPath();
+          ctx.moveTo(x,y);
+          ctx.lineTo(e.offsetX,e.offsetY);
+          ctx.stroke();
+          [x, y] = [e.offsetX,e.offsetY];
+        }
+        
+        function multiLine(numLines) {
+          ctx.beginPath();
+          for( let i = 0; i < numLines; i++) {
+            ctx.moveTo(x, y + 5 * i);
+            ctx.lineTo(e.offsetX,e.offsetY + 5 * i);
+          }
+          ctx.stroke();
+          [x, y] = [e.offsetX,e.offsetY];
+        }
+        function multiLineCircle(numLines, radius) {
+          ctx.beginPath();
+          for( let i = 0; i < numLines; i++) {
+            ctx.moveTo(x + radius * Math.cos,y + 5 * i);
+            ctx.lineTo(e.offsetX,e.offsetY + 5 * i);
+          }
+          ctx.stroke();
+          [x, y] = [e.offsetX,e.offsetY];
+        }
+        + radius * Math.cos(),y + 5 * i)
+      }
+
+      canvas.addEventListener("mousemove", draw);
+      canvas.addEventListener("mousedown", (e) => {
+        [x, y] = [e.offsetX, e.offsetY];
+        drawing = true;
+      });
+      canvas.addEventListener("mouseup", () => {
+        [x, y] = [null, null];
+        drawing = false;
+      });
+      canvas.addEventListener("mouseout", () => {
+        [x, y] = [null, null];
+        drawing = false;
+      });
+    </script>
+  </body>
+</html>
