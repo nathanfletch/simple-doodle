@@ -14,56 +14,79 @@
       canvas.height = window.innerHeight;
 
       ctx.strokeStyle = "blue";
-      // ctx.lineJoin = 'round';
-      // ctx.lineCap = 'round';
+      ctx.lineJoin = "round";
+      ctx.lineCap = "round";
       ctx.lineWidth = 2;
 
       let drawing = false;
-      // let mode = ""; 
-        //line: 
-          //width, numlines, 
-        //circle:
-
-
+      // let mode = "";
+      //line:
+      //width, numlines,
+      //circle:
 
       let x = null;
       let y = null;
+      let rotationOffset = 0;
+      let rotationSpeed = 0.1;
+      let hue = 0;
+      let radius = 10;
+      let radiusIncreasing = true;
+      let numLines = 2;
 
       function draw(e) {
+        console.log(e);
         if (!drawing) return;
         //switch statement to check all our state?
         // simpleLine();
-        multiLine(5);
-        
-        function simpleLine() {
-          ctx.beginPath();
-          ctx.moveTo(x,y);
-          ctx.lineTo(e.offsetX,e.offsetY);
-          ctx.stroke();
-          [x, y] = [e.offsetX,e.offsetY];
+        // multiLine(5, 20);
+        console.log(`hue: ${hue}`);
+        console.log(`radius: ${radius}`);
+        console.log(`numLines: ${numLines}`);
+        console.log(`radiusIncreasing: ${radiusIncreasing}`);
+        ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+        multiLineCircleRotate(5);
+
+        [x, y] = [e.offsetX, e.offsetY];
+        hue = (hue + 1) % 360;
+
+        if (e.ctrlKey) {
+          rotationOffset += rotationSpeed;
         }
+        if (e.altKey) {
+          if (radius > 15 || radius < 5) {
+            radiusIncreasing = !radiusIncreasing;
+          }
+          radiusIncreasing ? (radius += 0.5) : (radius -= 0.5);
+        }
+
         
-        function multiLine(numLines) {
+
+        function multiLine(numLines, gap) {
           ctx.beginPath();
-          for( let i = 0; i < numLines; i++) {
-            ctx.moveTo(x, y + 5 * i);
-            ctx.lineTo(e.offsetX,e.offsetY + 5 * i);
+          for (let i = 0; i < numLines; i++) {
+            ctx.moveTo(x, y + gap * i);
+            ctx.lineTo(e.offsetX, e.offsetY + gap * i);
           }
           ctx.stroke();
-          [x, y] = [e.offsetX,e.offsetY];
+          [x, y] = [e.offsetX, e.offsetY];
         }
-        function multiLineCircle(numLines, radius) {
+
+        function multiLineCircleRotate() {
           ctx.beginPath();
-          for( let i = 0; i < numLines; i++) {
-            ctx.moveTo(x + radius * Math.cos,y + 5 * i);
-            ctx.lineTo(e.offsetX,e.offsetY + 5 * i);
+          for (let i = 1; i <= numLines; i++) {
+            const currentRadians =
+              ((rotationOffset + 2) * Math.PI * i) / numLines;
+            xOffset = radius * Math.cos(currentRadians);
+            yOffset = radius * Math.sin(currentRadians);
+
+            ctx.moveTo(x + xOffset, y + yOffset);
+            ctx.lineTo(e.offsetX + xOffset, e.offsetY + yOffset);
           }
           ctx.stroke();
-          [x, y] = [e.offsetX,e.offsetY];
         }
-        + radius * Math.cos(),y + 5 * i)
       }
 
+      // canvas.addEventListener("mousemove", draw);
       canvas.addEventListener("mousemove", draw);
       canvas.addEventListener("mousedown", (e) => {
         [x, y] = [e.offsetX, e.offsetY];
@@ -77,6 +100,10 @@
         [x, y] = [null, null];
         drawing = false;
       });
+      // document.addEventListener("keydown", (e) => {
+      //   if(e.key > 0 && e.key < 10);
+      //   numLines = e.key;
+      // })
     </script>
   </body>
 </html>
